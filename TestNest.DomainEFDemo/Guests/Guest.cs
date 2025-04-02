@@ -22,4 +22,5 @@ public sealed class Guest : BaseEntity<GuestId>
         => (GuestName, GuestEmail, GuestSimpleAddress, NationalityId, IdTypeId, IdNumber, GuestType)
             = (PersonName.Empty(), EmailAddress.Empty(), SimpleAddress.Empty(),
                NationalityId.Empty(), IdTypeId.Empty(), IdNumber.Empty(), GuestType.None);
+
 }

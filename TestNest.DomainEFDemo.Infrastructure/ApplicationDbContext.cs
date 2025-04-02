@@ -5,14 +5,11 @@ namespace TestNest.DomainEFDemo.Infrastructure;
 
 public class ApplicationDbContext : DbContext
 {
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-        : base(options)
-    {
-    }
-
     public DbSet<Guest> Guests { get; set; }
     public DbSet<Nationality> Nationality { get; set; }
     public DbSet<Identification> Identification { get; set; }
+
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

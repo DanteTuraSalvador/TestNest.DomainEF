@@ -12,7 +12,7 @@ using TestNest.DomainEFDemo.Infrastructure;
 namespace TestNest.DomainEFDemo.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250402115114_InitialCreate")]
+    [Migration("20250402132919_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -28,7 +28,7 @@ namespace TestNest.DomainEFDemo.Infrastructure.Migrations
             modelBuilder.Entity("TestNest.DomainEFDemo.Guests.Guest", b =>
                 {
                     b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier")
+                        .HasColumnType("UNIQUEIDENTIFIER")
                         .HasColumnName("GuestId");
 
                     b.Property<GuestTypeId>("GuestType")
@@ -36,14 +36,16 @@ namespace TestNest.DomainEFDemo.Infrastructure.Migrations
                         .HasColumnName("GuestType");
 
                     b.Property<Guid>("IdTypeId")
-                        .HasColumnType("uniqueidentifier")
+                        .HasColumnType("UNIQUEIDENTIFIER")
                         .HasColumnName("IdTypeId");
 
                     b.Property<Guid>("NationalityId")
-                        .HasColumnType("uniqueidentifier")
+                        .HasColumnType("UNIQUEIDENTIFIER")
                         .HasColumnName("NationalityId");
 
                     b.HasKey("Id");
+
+                    SqlServerKeyBuilderExtensions.IsClustered(b.HasKey("Id"));
 
                     b.HasIndex("IdTypeId");
 
@@ -55,10 +57,24 @@ namespace TestNest.DomainEFDemo.Infrastructure.Migrations
             modelBuilder.Entity("TestNest.DomainEFDemo.Guests.Identification", b =>
                 {
                     b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier")
+                        .HasColumnType("UNIQUEIDENTIFIER")
                         .HasColumnName("IdTypeId");
 
+                    b.Property<string>("IdTypeName_Shadow")
+                        .IsRequired()
+                        .ValueGeneratedOnUpdateSometimes()
+                        .HasMaxLength(100)
+                        .HasColumnType("NVARCHAR")
+                        .HasColumnName("IdTypeName");
+
                     b.HasKey("Id");
+
+                    SqlServerKeyBuilderExtensions.IsClustered(b.HasKey("Id"), false);
+
+                    b.HasIndex("IdTypeName_Shadow")
+                        .HasDatabaseName("IX_Identifications_IdTypeName");
+
+                    SqlServerIndexBuilderExtensions.IsClustered(b.HasIndex("IdTypeName_Shadow"));
 
                     b.ToTable("Identifications", (string)null);
                 });
@@ -69,7 +85,21 @@ namespace TestNest.DomainEFDemo.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("NationalityId");
 
+                    b.Property<string>("NationalityName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("NVARCHAR")
+                        .HasColumnName("NationalityName");
+
                     b.HasKey("Id");
+
+                    SqlServerKeyBuilderExtensions.IsClustered(b.HasKey("Id"), false);
+
+                    b.HasIndex("NationalityName")
+                        .IsUnique()
+                        .HasDatabaseName("IX_Nationalities_NationalityName");
+
+                    SqlServerIndexBuilderExtensions.IsClustered(b.HasIndex("NationalityName"));
 
                     b.ToTable("Nationalities", (string)null);
                 });
@@ -91,11 +121,12 @@ namespace TestNest.DomainEFDemo.Infrastructure.Migrations
                     b.OwnsOne("TestNest.DomainEFDemo.ValueObjects.EmailAddress", "GuestEmail", b1 =>
                         {
                             b1.Property<Guid>("GuestId")
-                                .HasColumnType("uniqueidentifier");
+                                .HasColumnType("UNIQUEIDENTIFIER");
 
                             b1.Property<string>("Value")
                                 .IsRequired()
-                                .HasColumnType("nvarchar(max)")
+                                .HasMaxLength(100)
+                                .HasColumnType("NVARCHAR")
                                 .HasColumnName("Email");
 
                             b1.HasKey("GuestId");
@@ -109,12 +140,12 @@ namespace TestNest.DomainEFDemo.Infrastructure.Migrations
                     b.OwnsOne("TestNest.DomainEFDemo.ValueObjects.IdNumber", "IdNumber", b1 =>
                         {
                             b1.Property<Guid>("GuestId")
-                                .HasColumnType("uniqueidentifier");
+                                .HasColumnType("UNIQUEIDENTIFIER");
 
                             b1.Property<string>("Value")
                                 .IsRequired()
                                 .HasMaxLength(50)
-                                .HasColumnType("nvarchar(50)")
+                                .HasColumnType("NVARCHAR")
                                 .HasColumnName("IdNumber");
 
                             b1.HasKey("GuestId");
@@ -128,20 +159,23 @@ namespace TestNest.DomainEFDemo.Infrastructure.Migrations
                     b.OwnsOne("TestNest.DomainEFDemo.ValueObjects.PersonName", "GuestName", b1 =>
                         {
                             b1.Property<Guid>("GuestId")
-                                .HasColumnType("uniqueidentifier");
+                                .HasColumnType("UNIQUEIDENTIFIER");
 
                             b1.Property<string>("FirstName")
                                 .IsRequired()
-                                .HasColumnType("nvarchar(max)")
+                                .HasMaxLength(100)
+                                .HasColumnType("NVARCHAR")
                                 .HasColumnName("FirstName");
 
                             b1.Property<string>("LastName")
                                 .IsRequired()
-                                .HasColumnType("nvarchar(max)")
+                                .HasMaxLength(100)
+                                .HasColumnType("NVARCHAR")
                                 .HasColumnName("LastName");
 
                             b1.Property<string>("MiddleName")
-                                .HasColumnType("nvarchar(max)")
+                                .HasMaxLength(100)
+                                .HasColumnType("NVARCHAR")
                                 .HasColumnName("MiddleName");
 
                             b1.HasKey("GuestId");
@@ -155,11 +189,12 @@ namespace TestNest.DomainEFDemo.Infrastructure.Migrations
                     b.OwnsOne("TestNest.DomainEFDemo.ValueObjects.SimpleAddress", "GuestSimpleAddress", b1 =>
                         {
                             b1.Property<Guid>("GuestId")
-                                .HasColumnType("uniqueidentifier");
+                                .HasColumnType("UNIQUEIDENTIFIER");
 
                             b1.Property<string>("Country")
                                 .IsRequired()
-                                .HasColumnType("nvarchar(max)")
+                                .HasMaxLength(100)
+                                .HasColumnType("NVARCHAR")
                                 .HasColumnName("Country");
 
                             b1.HasKey("GuestId");
@@ -172,16 +207,18 @@ namespace TestNest.DomainEFDemo.Infrastructure.Migrations
                             b1.OwnsOne("TestNest.DomainEFDemo.ValueObjects.Address", "Address", b2 =>
                                 {
                                     b2.Property<Guid>("SimpleAddressGuestId")
-                                        .HasColumnType("uniqueidentifier");
+                                        .HasColumnType("UNIQUEIDENTIFIER");
 
                                     b2.Property<string>("AddressLine")
                                         .IsRequired()
-                                        .HasColumnType("nvarchar(max)")
+                                        .HasMaxLength(200)
+                                        .HasColumnType("NVARCHAR")
                                         .HasColumnName("AddressLine");
 
                                     b2.Property<string>("City")
                                         .IsRequired()
-                                        .HasColumnType("nvarchar(max)")
+                                        .HasMaxLength(100)
+                                        .HasColumnType("NVARCHAR")
                                         .HasColumnName("City");
 
                                     b2.HasKey("SimpleAddressGuestId");
@@ -214,11 +251,13 @@ namespace TestNest.DomainEFDemo.Infrastructure.Migrations
                     b.OwnsOne("TestNest.DomainEFDemo.ValueObjects.IdTypeName", "IdTypeName", b1 =>
                         {
                             b1.Property<Guid>("IdentificationId")
-                                .HasColumnType("uniqueidentifier");
+                                .HasColumnType("UNIQUEIDENTIFIER");
 
                             b1.Property<string>("Value")
                                 .IsRequired()
-                                .HasColumnType("nvarchar(max)")
+                                .ValueGeneratedOnUpdateSometimes()
+                                .HasMaxLength(100)
+                                .HasColumnType("NVARCHAR")
                                 .HasColumnName("IdTypeName");
 
                             b1.HasKey("IdentificationId");
@@ -230,30 +269,6 @@ namespace TestNest.DomainEFDemo.Infrastructure.Migrations
                         });
 
                     b.Navigation("IdTypeName")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("TestNest.DomainEFDemo.Guests.Nationality", b =>
-                {
-                    b.OwnsOne("TestNest.DomainEFDemo.ValueObjects.NationalityName", "NationalityName", b1 =>
-                        {
-                            b1.Property<Guid>("NationalityId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<string>("Value")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)")
-                                .HasColumnName("NationalityName");
-
-                            b1.HasKey("NationalityId");
-
-                            b1.ToTable("Nationalities");
-
-                            b1.WithOwner()
-                                .HasForeignKey("NationalityId");
-                        });
-
-                    b.Navigation("NationalityName")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618
