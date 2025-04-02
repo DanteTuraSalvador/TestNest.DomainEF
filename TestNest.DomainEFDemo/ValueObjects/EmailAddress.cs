@@ -14,4 +14,7 @@ public sealed class EmailAddress : ValueObject
     protected override IEnumerable<object?> GetAtomicValues() { yield return Value; }
 
     public override string ToString() => Value;
+
+    // other method ommitted for brevity,
+    // like the factory method Create and Update methods
 }

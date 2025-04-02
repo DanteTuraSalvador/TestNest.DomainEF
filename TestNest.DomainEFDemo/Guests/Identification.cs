@@ -19,4 +19,7 @@ public sealed class Identification : BaseEntity<IdTypeId>
 
     public override string ToString() 
         => IdTypeName.ToString();
+
+    // other method ommitted for brevity,
+    // like the factory method Create and Update methods
 }

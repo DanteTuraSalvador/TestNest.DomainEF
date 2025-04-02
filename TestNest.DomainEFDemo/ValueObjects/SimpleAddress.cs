@@ -16,4 +16,7 @@ public sealed class SimpleAddress : ValueObject
         => new object[] { Address, Country };
 
     public override string ToString() => $"{Address.AddressLine}, {Address.City}, {Country}";
+
+    // other method ommitted for brevity,
+    // like the factory method Create and Update methods
 }

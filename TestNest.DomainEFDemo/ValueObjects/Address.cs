@@ -18,4 +18,6 @@ public sealed class Address : ValueObject
     public override string ToString() 
         => $"{AddressLine}, {City}";
     
+    // other method ommitted for brevity,
+    // like the factory method Create and Update methods   
 }

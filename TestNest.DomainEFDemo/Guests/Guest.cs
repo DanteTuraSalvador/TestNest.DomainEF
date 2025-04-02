@@ -23,4 +23,8 @@ public sealed class Guest : BaseEntity<GuestId>
             = (PersonName.Empty(), EmailAddress.Empty(), SimpleAddress.Empty(),
                NationalityId.Empty(), IdTypeId.Empty(), IdNumber.Empty(), GuestType.None);
 
+    // other method ommitted for brevity,
+    // like the factory method Create and Update methods
+
+
 }

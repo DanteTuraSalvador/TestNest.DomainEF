@@ -29,4 +29,7 @@ public sealed class PersonName : ValueObject
             ? $"{this.FirstName} {this.LastName}"
             : $"{this.FirstName} {this.MiddleName} {this.LastName}";
     }
+
+    // other method ommitted for brevity,
+    // like the factory method Create and Update methods
 }

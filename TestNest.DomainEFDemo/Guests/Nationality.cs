@@ -38,4 +38,8 @@ public sealed class Nationality : BaseEntity<NationalityId>
 
     //public override string ToString() 
     //    => NationalityName.ToString();
+
+
+    // other method ommitted for brevity,
+    // like the factory method Create and Update methods
 }
