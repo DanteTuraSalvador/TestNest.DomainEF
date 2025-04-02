@@ -23,7 +23,7 @@ See the Result pattern: [https://github.com/DanteTuraSalvador/TestNest.ResultPat
 See the Value Object: [https://github.com/DanteTuraSalvador/TestNest.ValueObjects](https://github.com/DanteTuraSalvador/TestNest.ValueObjects)<br>
 See the StronglyType Id: [https://github.com/DanteTuraSalvador/TestNest.StronglyTypeId](https://github.com/DanteTuraSalvador/TestNest.StronglyTypeId)<br>
 
-### Domain Model: Guest
+### Concrete Class: Guest 
 ```csharp
 public sealed class Guest : BaseEntity<GuestId>
 {
