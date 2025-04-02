@@ -18,6 +18,10 @@ This repository demonstrates an implementation of **Strongly Typed IDs**, **Valu
 - 🧑‍💻 **Demo Project**: Includes example implementations for handling `Guest` entities and more.
 
 ## 📌 Core Implementation
+See the Result pattern: [https://github.com/DanteTuraSalvador/TestNest.ResultPatterns](https://github.com/DanteTuraSalvador/TestNest.ResultPatterns)<br>
+See the Result pattern: [https://github.com/DanteTuraSalvador/TestNest.ResultPatterns](https://github.com/DanteTuraSalvador/TestNest.ResultPatterns)<br>
+See the Value Object: [https://github.com/DanteTuraSalvador/TestNest.ValueObjects](https://github.com/DanteTuraSalvador/TestNest.ValueObjects)<br>
+See the StronglyType Id: [https://github.com/DanteTuraSalvador/TestNest.StronglyTypeId](https://github.com/DanteTuraSalvador/TestNest.StronglyTypeId)<br>
 
 ### Domain Model: Guest
 ```csharp
@@ -187,7 +191,7 @@ public sealed class SimpleAddress : ValueObject
 
 ## 📌 EF Core Configuration
 ### ✅ Guest
-The Result class is used when there is no return value but you still want to communicate whether an operation succeeded or failed. It also carries any relevant error information in case of failure.
+This configuration maps the Guest entity to the Guests table in the database, using EF Core. It defines strongly typed IDs (GuestId, NationalityId, IdTypeId), value objects (GuestName, GuestEmail, GuestSimpleAddress, IdNumber), and a smart enum (GuestType). Each property is configured with specific column types, constraints, and relationships. The configuration also sets up foreign key relationships with Nationality and Identification entities, with restricted delete behavior. Overall, it ensures a robust, type-safe mapping of the domain model to the database.
 ```csharp
 public class GuestConfiguration : IEntityTypeConfiguration<Guest>
 {
@@ -302,7 +306,7 @@ public class GuestConfiguration : IEntityTypeConfiguration<Guest>
 ```
 
 ### ✅ Nationality
-The Result<T> class is a generic version that wraps a successful result with a value of type T. If the operation fails, it contains error information, similar to the Result class.
+This configuration maps the Nationality entity to the Nationalities table. It sets up a primary key on the Id property, specifying that it should not be clustered, as the NationalityName is the clustered index. The Id is configured as a strongly typed ID (NationalityId). The NationalityName is mapped as a regular column (NVARCHAR type, max length 100) with an index created on it. There's an option to use a value object (NationalityName), and if desired, it can be indexed with a unique constraint and made clustered. If the value object is not used, the NationalityName property is directly mapped, and the index is applied. The configuration allows flexibility in how NationalityName is handled, either as a value object or as a regular property.
 ```csharp
 public class NationalityConfiguration : IEntityTypeConfiguration<Nationality>
 {
@@ -369,7 +373,7 @@ public class NationalityConfiguration : IEntityTypeConfiguration<Nationality>
 ```
 
 ### ✅ Identification
-You can chain operations using Bind and Map methods, which allow you to transform or pass the result through multiple stages. If any stage fails, the chain stops immediately, and the failure result is returned.
+This configuration maps the Identification entity to the Identifications table. It sets up the primary key on the Id property, ensuring it is not clustered. The Id is a strongly typed ID (IdTypeId). The IdTypeName is configured as a value object and is mapped to a column (NVARCHAR type, max length 100). Additionally, a shadow property IdTypeName_Shadow is created for the IdTypeName, ensuring the same column type and max length, and an index is applied to it with a clustered index. This configuration allows flexible mapping of the IdTypeName value object while ensuring indexing for efficient lookups
 ```csharp
 public class IdentificationConfiguration : IEntityTypeConfiguration<Identification>
 {
@@ -420,29 +424,31 @@ dotnet ef database update
 ## 📌 Example Usage
 ### ✅ Guest 
 ```csharp
-// Create the value objects before calling Guest.Create
+// Assumes that all value object has its own Create factory object that validates its input
 
-var guestId = GuestId.New(); // Assuming GuestId.New() generates a new GuestId
-var guestName = PersonName.Create("John", "Doe"); // PersonName.Create() creates a new PersonName
+var guestName = PersonName.Create("John", null, "Doe"); // PersonName.Create() creates a new PersonName (with optional middle name)
 var guestEmail = EmailAddress.Create("john.doe@example.com"); // EmailAddress.Create() creates a new EmailAddress
-var guestAddress = SimpleAddress.Create("123 Main St", "City", "Country"); // SimpleAddress.Create() creates a new SimpleAddress
-var nationalityId = NationalityId.New(); // NationalityId.New() generates a new NationalityId
-var idTypeId = IdTypeId.New(); // IdTypeId.New() generates a new IdTypeId
+
+// First, create the Address
+var address = new Address("123 Main St", "City"); // Create Address object
+var guestAddress = SimpleAddress.Create(address, "Country"); // SimpleAddress.Create() with Address and country
+
+var nationalityId = NationalityId.Empty(); // Assuming NationalityId is an existing value (not new)
+var idTypeId = IdTypeId.Empty(); // Assuming IdTypeId is an existing value (not new)
 var idNumber = IdNumber.Create("AB123456"); // IdNumber.Create() creates a new IdNumber
-var guestType = GuestType.Standard; // Assuming GuestType.Standard is a predefined smart enum value
+var guestType = GuestType.Primary; // Assuming GuestType.Primary is a predefined smart enum value
 
 // Now create the Guest object
+// Guest.Create method create its own Id
 var guest = Guest.Create(
-    guestId,          // Pass the pre-created GuestId
     guestName,        // Pass the pre-created PersonName
     guestEmail,       // Pass the pre-created EmailAddress
     guestAddress,     // Pass the pre-created SimpleAddress
-    nationalityId,    // Pass the pre-created NationalityId
-    idTypeId,         // Pass the pre-created IdTypeId
+    nationalityId,    // Pass the pre-existing NationalityId
+    idTypeId,         // Pass the pre-existing IdTypeId
     idNumber,         // Pass the pre-created IdNumber
     guestType         // Pass the pre-created GuestType
 );
-
 ```
 ## 📜 License
 
