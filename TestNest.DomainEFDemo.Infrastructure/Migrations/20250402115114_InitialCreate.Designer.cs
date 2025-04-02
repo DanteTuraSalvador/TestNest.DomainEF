@@ -6,14 +6,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TestNest.DomainEFDemo.Infrastructure;
-using TestNest.DomainEFDemo.ValueObjects.Enums;
 
 #nullable disable
 
 namespace TestNest.DomainEFDemo.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250402100926_InitialCreate")]
+    [Migration("20250402115114_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -32,7 +31,7 @@ namespace TestNest.DomainEFDemo.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("GuestId");
 
-                    b.Property<GuestType.GuestTypeId>("GuestType")
+                    b.Property<GuestTypeId>("GuestType")
                         .HasColumnType("int")
                         .HasColumnName("GuestType");
 

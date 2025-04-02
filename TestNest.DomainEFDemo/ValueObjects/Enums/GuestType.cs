@@ -3,10 +3,9 @@ using TestNest.DomainEFDemo.Exceptions;
 
 namespace TestNest.DomainEFDemo.ValueObjects.Enums;
 
+
 public sealed class GuestType
 {
-    public enum GuestTypeId { None = -1, Primary = 0, Companion = 1, FamilyMember = 2, EventAttendees = 3 }
-
     private static readonly ImmutableDictionary<GuestTypeId, GuestType> _statuses =
         new Dictionary<GuestTypeId, GuestType>
         {
@@ -33,22 +32,21 @@ public sealed class GuestType
     public static readonly GuestType FamilyMember = _statuses[GuestTypeId.FamilyMember];
     public static readonly GuestType EventAttendees = _statuses[GuestTypeId.EventAttendees];
 
-
-    public static GuestType FromId(GuestTypeId id) 
-        => _statuses.TryGetValue(id, out var status) ? status 
+    public static GuestType FromId(GuestTypeId id)
+        => _statuses.TryGetValue(id, out var status) ? status
             : throw GuestTypeException.InvalidGuestType();
 
-    public static GuestType FromName(string name) 
-        => _statusesByName.TryGetValue(name.ToLowerInvariant(), out var status) ? status 
+    public static GuestType FromName(string name)
+        => _statusesByName.TryGetValue(name.ToLowerInvariant(), out var status) ? status
             : throw GuestTypeException.InvalidGuestType();
 
-    public static GuestType Of(GuestTypeId id) 
+    public static GuestType Of(GuestTypeId id)
         => FromId(id);
 
-    public static implicit operator GuestType(GuestTypeId id) 
+    public static implicit operator GuestType(GuestTypeId id)
         => FromId(id);
 
-    public static IReadOnlyCollection<GuestType> All 
+    public static IReadOnlyCollection<GuestType> All
         => _statuses.Values.ToImmutableList();
 
     public static GuestType Empty => None;

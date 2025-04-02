@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TestNest.DomainEFDemo.Infrastructure;
-using TestNest.DomainEFDemo.ValueObjects.Enums;
 
 #nullable disable
 
@@ -29,7 +28,7 @@ namespace TestNest.DomainEFDemo.Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("GuestId");
 
-                    b.Property<GuestType.GuestTypeId>("GuestType")
+                    b.Property<GuestTypeId>("GuestType")
                         .HasColumnType("int")
                         .HasColumnName("GuestType");
 
