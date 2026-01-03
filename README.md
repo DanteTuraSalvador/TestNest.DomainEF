@@ -1,5 +1,7 @@
 # 🚀 EF Core Demo with Strongly Typed IDs, Value Objects, and Smart Enums
 
+[![Azure DevOps Board](https://img.shields.io/badge/Azure%20DevOps-Board-blue)](https://dev.azure.com/tengtium-io/DomainEF)
+
 This repository demonstrates an implementation of **Strongly Typed IDs**, **Value Objects**, **Smart Enums**, and **EF Core Migrations** in C#. It showcases how to build a rich domain model that ensures type safety, encapsulates business logic, and works seamlessly with EF Core for persistence.
 
 ## This implementation includes:
@@ -17,11 +19,12 @@ This repository demonstrates an implementation of **Strongly Typed IDs**, **Valu
 - 🛡️ **Type Safety**: Strongly typed IDs and value objects improve safety and readability of your domain models.
 - 🧑‍💻 **Demo Project**: Includes example implementations for handling `Guest` entities and more.
 
-## 📌 Core Implementation
-See the Result pattern: [https://github.com/DanteTuraSalvador/TestNest.ResultPatterns](https://github.com/DanteTuraSalvador/TestNest.ResultPatterns)<br>
-See the Result pattern: [https://github.com/DanteTuraSalvador/TestNest.ResultPatterns](https://github.com/DanteTuraSalvador/TestNest.ResultPatterns)<br>
-See the Value Object: [https://github.com/DanteTuraSalvador/TestNest.ValueObjects](https://github.com/DanteTuraSalvador/TestNest.ValueObjects)<br>
-See the StronglyType Id: [https://github.com/DanteTuraSalvador/TestNest.StronglyTypeId](https://github.com/DanteTuraSalvador/TestNest.StronglyTypeId)<br>
+## 📌 Related Projects
+This project builds upon the following DDD building blocks:
+- **Result Pattern**: [TestNest.ResultPatterns](https://github.com/DanteTuraSalvador/TestNest.ResultPatterns)
+- **Value Objects**: [TestNest.ValueObjects](https://github.com/DanteTuraSalvador/TestNest.ValueObjects)
+- **Strongly Typed IDs**: [TestNest.StronglyTypeId](https://github.com/DanteTuraSalvador/TestNest.StronglyTypeId)
+- **Smart Enums**: [TestNest.SmartEnums](https://github.com/DanteTuraSalvador/TestNest.SmartEnums)
 
 ### Concrete Class: Guest 
 ```csharp
