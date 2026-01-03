@@ -18,6 +18,7 @@ This repository demonstrates an implementation of **Strongly Typed IDs**, **Valu
 - 🛠️ **EF Core Migrations**: Handles migrations and schema updates for strongly typed IDs and value objects.
 - 🛡️ **Type Safety**: Strongly typed IDs and value objects improve safety and readability of your domain models.
 - 🧑‍💻 **Demo Project**: Includes example implementations for handling `Guest` entities and more.
+- 🐳 **Docker Support**: Includes docker-compose for easy SQL Server setup.
 
 ## 📌 Related Projects
 This project builds upon the following DDD building blocks:
@@ -419,9 +420,67 @@ public class IdentificationConfiguration : IEntityTypeConfiguration<Identificati
 ```
 ### ✅ EF Core Migration
 Once you've set up your domain model and configurations, create and apply the EF Core migrations:
-```csharp
+```bash
 dotnet ef migrations add InitialCreate
 dotnet ef database update
+```
+
+## 🐳 Docker Setup
+
+### Prerequisites
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and running
+
+### Quick Start with Docker
+
+1. **Start SQL Server container**:
+```bash
+docker-compose up -d
+```
+
+2. **Verify SQL Server is running**:
+```bash
+docker-compose ps
+```
+
+3. **Run EF Core migrations** (using Docker connection string):
+```bash
+cd TestNest.DomainEF.Console
+dotnet ef database update -- --environment Docker
+```
+
+Or manually specify the connection string:
+```bash
+dotnet ef database update --connection "Server=localhost,1433;Database=NestDomain;User Id=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=Yes"
+```
+
+4. **Run the console application**:
+```bash
+dotnet run --project TestNest.DomainEF.Console
+```
+
+### Docker Configuration
+
+**docker-compose.yml** creates:
+- SQL Server 2022 Developer Edition container
+- Persistent volume for data storage
+- Health check for container readiness
+- Port 1433 exposed for local connections
+
+### Connection Strings
+
+| Environment | Connection String |
+|-------------|------------------|
+| **Local SQL Server** | `Server=localhost;Database=NestDomain;Trusted_Connection=True;TrustServerCertificate=Yes` |
+| **Docker SQL Server** | `Server=localhost,1433;Database=NestDomain;User Id=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=Yes` |
+
+### Stop Docker Container
+```bash
+docker-compose down
+```
+
+To also remove the data volume:
+```bash
+docker-compose down -v
 ```
 
 ## 📌 Example Usage
